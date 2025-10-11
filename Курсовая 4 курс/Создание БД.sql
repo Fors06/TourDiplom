@@ -1,0 +1,1 @@
+Create database [travel_agencies]
