@@ -4,9 +4,14 @@
              xmlns:local="clr-namespace:Diplom"
              xmlns:converters="clr-namespace:Diplom.Data.Convertes"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             StartupUri="View\Admin\The common window\The common window.xaml">
+    <!--     StartupUri="View\Employee\EmployeeWindow.xaml"> -->
+      
+           
+    <!--    StartupUri="View\MainWindow.xaml"> -->
+    
+       
              
-     StartupUri="View\Admin\The common window\The common window.xaml">
-             <!--StartupUri="View\Employee\EmployeeWindow.xaml"> -->
                      
     
 

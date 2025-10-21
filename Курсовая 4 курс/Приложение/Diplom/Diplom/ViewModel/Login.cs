@@ -1,14 +1,8 @@
 ﻿using Diplom.Model.Entity;
 using Diplom.Model.User;
-using Diplom.View;
 using Diplom.View.Admin.The_common_window;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 

@@ -18,10 +18,10 @@ namespace Diplom.Model.Entity
         public int ПутешествиеId { get; set; }
 
         [Column("ДатаНачала")]
-        public DateOnly ДатаНачала {  get; set; }
+        public DateTime ДатаНачала {  get; set; }
 
         [Column("ДатаОкончания")]
-        public DateOnly ДатаОкончания {  get; set; }
+        public DateTime ДатаОкончания {  get; set; }
 
         [ForeignKey("КлиентId")]
         public virtual Client Clients { get; set; }

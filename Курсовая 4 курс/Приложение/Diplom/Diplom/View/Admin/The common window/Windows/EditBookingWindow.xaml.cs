@@ -17,9 +17,9 @@ namespace Diplom.View.Admin.The_common_window.Windows
     /// <summary>
     /// Логика взаимодействия для EditOrderWindow.xaml
     /// </summary>
-    public partial class EditOrderWindow : Window
+    public partial class EditBookingWindow : Window
     {
-        public EditOrderWindow()
+        public EditBookingWindow()
         {
             InitializeComponent();
         }

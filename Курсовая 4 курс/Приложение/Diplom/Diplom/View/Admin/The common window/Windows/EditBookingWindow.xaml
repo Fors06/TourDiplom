@@ -1,0 +1,34 @@
+﻿<Window x:Class="Diplom.View.Admin.The_common_window.Windows.EditBookingWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Diplom.View.Admin.The_common_window.Windows"
+        mc:Ignorable="d"
+       Title="Редактирование бронирования" Height="450" Width="350">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Label Content="Дата начала:" />
+        <DatePicker Name="StartDatePicker" Grid.Row="1" SelectedDate="{Binding StartDate, Mode=TwoWay}" />
+
+        <Label Content="Дата окончания:" Grid.Row="2" />
+        <DatePicker Name="EndDatePicker" Grid.Row="3" SelectedDate="{Binding EndDate, Mode=TwoWay}" />
+
+        <Label Content="Выбор тура:" Grid.Row="4" />
+        <ComboBox Name="TourComboBox" Grid.Row="4" ItemsSource="{Binding AllTours}" DisplayMemberPath="Название" SelectedItem="{Binding SelectedTour}" Margin="0,36,0,-36" />
+
+        <Label Content="Цена тура:" Grid.Row="4" Margin="0,77,0,-76" />
+        <TextBox Name="PriceTextBox" Grid.Row="4" Text="{Binding Price, Mode=OneWay}" IsReadOnly="True" Margin="0,112,0,-112" />
+        <!-- Только чтение цены -->
+
+        <Button Content="Сохранить" Command="{Binding SaveBookingCommand}" Grid.Row="4" Margin="-10,258,10,-248" />
+        <Button Content="Отмена" Command="{Binding CancelCommand}" Grid.Row="4" Margin="0,284,0,-273" />
+    </Grid>
+</Window>

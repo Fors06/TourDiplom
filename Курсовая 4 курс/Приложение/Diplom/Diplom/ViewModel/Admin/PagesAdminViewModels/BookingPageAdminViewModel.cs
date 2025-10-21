@@ -2,12 +2,13 @@
 using Diplom.Model.Repository;
 using Diplom.Model.Repository.Abstraction;
 using Diplom.View.Admin.The_common_window.Windows;
-using Diplom.ViewModel.EmployeeWindows;
+using Diplom.ViewModels.EmployeeViewModel.Окна_для_изменений;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using System.Windows.Input;
 
 namespace Diplom.ViewModel.Admin.PagesAdminViewModels
 {
@@ -28,6 +29,8 @@ namespace Diplom.ViewModel.Admin.PagesAdminViewModels
                 OnPropertyChanged(nameof(Booking));
             }
         }
+
+        public ICommand OpenEditBookingCommand => new RelayCommand(EditBooking);
 
         public BookingPageAdminViewModel()
         {
@@ -57,27 +60,8 @@ namespace Diplom.ViewModel.Admin.PagesAdminViewModels
 
         #region Общие кнопки
 
-        public void OpenEditOrderForm(object obj)
+        public void EditBooking(object obj)
         {
-            if (SelectedBooking == null)
-            {
-                // Если заказ не выбран, выводим предупреждение
-                MessageBox.Show("Необходимо выбрать заказ.", "Внимание", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
-            }
-
-            var currentWindow = App.Current.MainWindow as Window ?? Window.GetWindow(obj as DependencyObject);
-
-            var editWindow = new EditOrderWindow();
-            editWindow.DataContext = new EditOrderViewModel(SelectedOrder); // Передаем только заказ
-            Application.Current.MainWindow = editWindow;
-
-
-            editWindow.Show();
-
-            currentWindow.Close();
-
-
         }
 
         #endregion

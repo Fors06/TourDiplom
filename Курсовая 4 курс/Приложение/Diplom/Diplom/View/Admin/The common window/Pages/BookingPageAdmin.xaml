@@ -5,6 +5,9 @@
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:Diplom.View.Admin.The_common_window.Pages"
+      xmlns:local1="clr-namespace:Diplom.Data"
+      xmlns:local2="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf" 
+      xmlns:local3="clr-namespace:Diplom.Data.Convertes"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       Title="BookingPageAdmin">
@@ -16,7 +19,10 @@
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/Recommended/Primary/MaterialDesignColor.Green.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.TextBox.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.ListBox.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.DatePicker.xaml"/>
             </ResourceDictionary.MergedDictionaries>
+
+            <local2:BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         </ResourceDictionary>
     </Page.Resources>
 
@@ -38,9 +44,9 @@
 
         <!-- Панель инструментов -->
         <StackPanel Orientation="Horizontal" Margin="10,10,10,10" Grid.ColumnSpan="2" Grid.Row="0">
-            <Button Style="{StaticResource ButtonStyle}" Command="{Binding AddCommand}" Content="Добавить тур" Margin="5" FontSize="16"/>
-            <Button Style="{StaticResource ButtonStyle}" Command="{Binding EditCommand}" Content="Редактировать тур" Margin="5" FontSize="16"/>
-            <Button Style="{StaticResource ButtonStyle}" Command="{Binding DeleteTourCommand}" Content="Удалить тур" Margin="5" FontSize="16"/>
+            <Button Style="{StaticResource ButtonStyle}" Command="{Binding AddCommand}" Content="Добавить бронь" Margin="5" FontSize="16"/>
+            <Button Style="{StaticResource ButtonStyle}" Command="{Binding EditCommand}" Content="Редактировать бронь" CommandParameter="{Binding RelativeSource={RelativeSource Self}}" Margin="5" FontSize="16"/>
+            <Button Style="{StaticResource ButtonStyle}" Command="{Binding DeleteCommand}" Content="Удалить бронь" Margin="5" FontSize="16"/>
             <Button Style="{StaticResource ButtonStyle}" Command="{Binding ClearFieldsCommand}" Content="Очистить поля" Margin="5" FontSize="16"/>
         </StackPanel>
 
@@ -54,10 +60,10 @@
 
         <!-- Таблица туров -->
         <DataGrid Grid.Row="2" ItemsSource="{Binding Bookings}" SelectedItem="{Binding SelectedBooking}"
-                 AutoGenerateColumns="False" Margin="5,10,1,10" FontSize="16"
-                 CanUserAddRows="False" SelectionMode="Single" Grid.ColumnSpan="2">
+                  AutoGenerateColumns="False" Margin="5,10,1,10" FontSize="16"
+                  CanUserAddRows="False" SelectionMode="Single" Grid.ColumnSpan="2">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Название" Binding="{Binding Tours.Название}" Width="*"/>
+                <DataGridTextColumn Header="Название тура" Binding="{Binding Tours.Название}" Width="*"/>
                 <DataGridTextColumn Header="Клиент" Binding="{Binding Clients.Users.ФИО}" Width="*"/>
                 <DataGridTextColumn Header="Цена" Binding="{Binding Tours.Цена}" Width="*"/>
                 <DataGridTextColumn Header="Начало-Окончание" Width="*">
@@ -74,33 +80,80 @@
         <!-- Поля ввода -->
         <Grid Grid.Row="3" Margin="5,8,5,5" Grid.ColumnSpan="2">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="149*"/>
-                <ColumnDefinition Width="93*"/>
-                <ColumnDefinition Width="538*"/>
+                <ColumnDefinition Width="195*"/>
+                <ColumnDefinition Width="157*"/>
+                <ColumnDefinition Width="428*"/>
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto"/>
-                <RowDefinition Height="80.406"/>
-                <RowDefinition Height="55.306"/>
+                <RowDefinition Height="42"/>
+                <RowDefinition Height="93.712"/>
             </Grid.RowDefinitions>
 
-            <TextBox Style="{StaticResource MaterialDesignTextBox}" Text="{Binding Название, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                     materialDesign:HintAssist.Hint="Название..." Foreground="White" BorderBrush="White" Margin="5,0,0,0"
-                     FontSize="16" Height="40" VerticalAlignment="Center" Grid.ColumnSpan="2"/>
+            <!-- Выбор клиента -->
+            <TextBox x:Name="ClientFIOTextBox"
+                     materialDesign:HintAssist.Hint="ФИО клиента..."
+                     Style="{StaticResource MaterialDesignTextBox}"
+                     FontSize="16" Foreground="White" BorderBrush="White"
+                     Margin="5,0,0,0"
+                     Height="40"
+                     Text="{Binding ClientFIO, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
 
-            <TextBox Style="{StaticResource MaterialDesignTextBox}" Text="{Binding Описание, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                     materialDesign:HintAssist.Hint="Описание..." Foreground="White" BorderBrush="White" Margin="5,0,5,0"
-                     FontSize="16" Grid.Column="2" Height="40" VerticalAlignment="Center" />
+            <ListBox BorderBrush="White" Foreground="White"
+                     Visibility="{Binding ShowClientSuggestions, Converter={StaticResource BooleanToVisibilityConverter}}"
+                     ItemsSource="{Binding FilteredClients}"
+                     Style="{StaticResource MaterialDesignListBox}"
+                     Margin="5,0,10,0"
+                     HorizontalContentAlignment="Stretch"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                     ScrollViewer.VerticalScrollBarVisibility="Auto"
+                     MaxHeight="200"
+                     SelectedItem="{Binding SelectedClient}" Height="103">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Users.ФИО}" Padding="5" FontSize="14"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
 
-            <TextBox x:Name="CostTextBox" Style="{StaticResource MaterialDesignTextBox}" 
-                     Text="{Binding Цена, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                     materialDesign:HintAssist.Hint="Цена..." Foreground="White" BorderBrush="White"
-                     FontSize="16" HorizontalAlignment="Left" Width="198" Height="38" VerticalAlignment="Center" Margin="330,0,0,0" Grid.Row="1" Grid.Column="2"/>
+            <!-- Выбор тура -->
+            <TextBox x:Name="TourTitleTextBox"
+                     materialDesign:HintAssist.Hint="Название тура..."
+                     Style="{StaticResource MaterialDesignTextBox}"
+                     FontSize="16" Foreground="White" BorderBrush="White"
+                     Margin="5,0,0,0"
+                     Height="40"
+                     Text="{Binding TourTitle, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Grid.Column="1"/>
 
-            <TextBox x:Name="DurationTextBox" Style="{StaticResource MaterialDesignTextBox}" 
-                     Text="{Binding ДлительностьДней, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                     materialDesign:HintAssist.Hint="Длительность (дни)..." Foreground="White" BorderBrush="White"
-                     FontSize="16" HorizontalAlignment="Left" Width="198" Height="38" VerticalAlignment="Top" Margin="0,32,0,0" Grid.ColumnSpan="2" Grid.Row="1"/>
+            <ListBox BorderBrush="White" Foreground="White"
+                     Visibility="{Binding ShowTourSuggestions, Converter={StaticResource BooleanToVisibilityConverter}}"
+                     ItemsSource="{Binding FilteredTours}"
+                     Style="{StaticResource MaterialDesignListBox}"
+                     Margin="5,0,10,0"
+                     HorizontalContentAlignment="Stretch"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                     ScrollViewer.VerticalScrollBarVisibility="Auto"
+                     MaxHeight="200"
+                     SelectedItem="{Binding SelectedTour}" Height="103" Grid.Column="1">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Название}" Padding="5" FontSize="14"/>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+            <!-- Остальные поля остаются неизменными -->
+            <DatePicker Style="{StaticResource MaterialDesignDatePicker}"
+                        SelectedDate="{Binding ДатаНачала, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        materialDesign:HintAssist.Hint="Дата начала"
+                        Margin="5,0,0,0"
+                        FontSize="16" Grid.Column="0" Grid.Row="1"/>
+
+            <DatePicker Style="{StaticResource MaterialDesignDatePicker}"
+                        SelectedDate="{Binding ДатаОкончания, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                        materialDesign:HintAssist.Hint="Дата окончания"
+                        Margin="0,11,10,41"
+                        FontSize="16" Grid.Row="2"/>
         </Grid>
     </Grid>
 </Page>

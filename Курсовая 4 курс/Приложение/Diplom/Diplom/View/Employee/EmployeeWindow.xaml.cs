@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Diplom.ViewModel.EmployeeWindows;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -22,6 +23,7 @@ namespace Diplom.View.Employee
         public EmployeeWindow()
         {
             InitializeComponent();
+            DataContext = new WindowEmployeeViewModel();
         }
     }
 }

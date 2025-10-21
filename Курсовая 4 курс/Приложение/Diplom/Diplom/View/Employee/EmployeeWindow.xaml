@@ -67,7 +67,7 @@
                               Width="200" FontSize="16"
                              Foreground="White" BorderBrush="White"/>
                     <Button Content="Новый заказ" Command="{Binding OpenCreateOrderFormCommand}" Margin="10,0,0,0" Style="{StaticResource ButtonStyle}"/>
-                    <Button Content="Редактировать" Command="{Binding OpenEditOrderFormCommand}" Margin="10,0,0,0" Style="{StaticResource ButtonStyle}"
+                    <Button Content="Редактировать" Command="{Binding OpenEditBookingCommand }" Margin="10,0,0,0" Style="{StaticResource ButtonStyle}"
                             CommandParameter="{Binding RelativeSource={RelativeSource Self}}"/>
                     <Button Content="Обновить" Command="{Binding UpdateCommand}" Margin="10,0,0,0" Style="{StaticResource ButtonStyle}"/>
                 </StackPanel>
@@ -96,7 +96,7 @@
                                     <DataGridTextColumn Header="Цена" Binding="{Binding Tours.Цена}" Width="*"/>
                                     <DataGridTextColumn Header="Начало-Окончание" Width="*">
                                         <DataGridTextColumn.Binding>
-                                            <MultiBinding StringFormat="{} {0} - {1}">
+                                            <MultiBinding StringFormat="{} {0:dd/MM/yyyy} - {1:dd/MM/yyyy}">
                                                 <Binding Path="ДатаНачала"/>
                                                 <Binding Path="ДатаОкончания"/>
                                             </MultiBinding>

@@ -1,11 +1,15 @@
 ﻿using Diplom.Model.Entity;
 using Diplom.Model.Repository;
 using Diplom.Model.Repository.Abstraction;
+using Diplom.View.Admin.The_common_window.Windows;
+using Diplom.ViewModels.EmployeeViewModel.Окна_для_изменений;
 using Microsoft.EntityFrameworkCore;
 using RequestDataAccess.Repository;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows;
+using System.Windows.Input;
 
 namespace Diplom.ViewModel.EmployeeWindows
 {
@@ -33,6 +37,22 @@ namespace Diplom.ViewModel.EmployeeWindows
               
             }
         }
+
+        private Booking _selectedBooking;
+
+        public Booking SelectedBooking
+        {
+            get => _selectedBooking;
+            set
+            {
+                _selectedBooking = value;
+                OnPropertyChanged(nameof(SelectedBooking));
+
+
+            }
+        }
+
+        public ICommand OpenEditBookingCommand => new RelayCommand(EditBooking);
 
         public WindowEmployeeViewModel()
         {
@@ -69,6 +89,43 @@ namespace Diplom.ViewModel.EmployeeWindows
                 Bookings.Add(tour);
             }
         }
+        #endregion
+
+        #region Общие кнопки
+
+       
+
+        private void EditBooking(object parameter)
+        {
+            if (SelectedBooking == null)
+            {
+                // Если заказ не выбран, выводим предупреждение
+                MessageBox.Show("Необходимо выбрать заказ.", "Внимание", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            //var currentWindow = App.Current.MainWindow as Window ?? Window.GetWindow(obj as DependencyObject);
+
+            //var editWindow = new EditBookingWindow();
+            //editWindow.DataContext = new EditBookingViewModel(SelectedBooking); // Передаем только заказ
+            //Application.Current.MainWindow = editWindow;
+
+
+            //editWindow.Show();
+
+            //currentWindow.Close();
+
+            var currentWindow = App.Current.MainWindow as Window;
+
+            var editWindow = new EditBookingWindow();
+            editWindow.DataContext = new EditBookingViewModel(SelectedBooking); // Передаем только заказ
+            Application.Current.MainWindow = editWindow;
+
+            editWindow.Show();
+
+            currentWindow.Close();
+        }
+
         #endregion
 
         public event PropertyChangedEventHandler? PropertyChanged;
